@@ -5,17 +5,15 @@ import com.example.lombokworkshop.model.InventoryItem;
 import com.example.lombokworkshop.repository.AmountCouponRepository;
 import com.example.lombokworkshop.repository.InventoryItemRepository;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ShopService {
 
-  @Autowired
-  private AmountCouponRepository amountCouponRepository;
-
-  @Autowired
-  private InventoryItemRepository inventoryItemRepository;
+  private final AmountCouponRepository amountCouponRepository;
+  private final InventoryItemRepository inventoryItemRepository;
 
   public List<AmountCoupon> findAllAmountCoupons(){
     return amountCouponRepository.findAll();

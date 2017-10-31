@@ -3,16 +3,14 @@ package com.example.lombokworkshop.model;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+@NoArgsConstructor
 public class LocalizedString extends HashMap<String, String> {
 
   private static final long serialVersionUID = -3396296944446450693L;
-
-  public LocalizedString() {
-
-  }
 
   public LocalizedString(String label) {
     this.put(LocaleContextHolder.getLocale().getLanguage(), label);

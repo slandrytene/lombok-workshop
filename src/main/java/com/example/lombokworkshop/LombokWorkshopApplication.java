@@ -11,6 +11,7 @@ import com.example.lombokworkshop.repository.AmountCouponRepository;
 import com.example.lombokworkshop.repository.InventoryItemRepository;
 import java.util.Locale;
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -40,25 +41,31 @@ public class LombokWorkshopApplication {
 			banner.with(Locale.FRENCH, "banière");
 
 			AmountCoupon amountCoupon = AmountCoupon.builder()
-					.withAmountValue(Amount.builder()
-							.withDecimalValue(DecimalValue.ONE_HUNDRED_PERCENT)
-							.withCurrency(SupportedCurrency.CAD)
+					.amountValue(Amount.builder()
+							.decimalValue(DecimalValue.ONE_HUNDRED_PERCENT)
+							.currencyCode(SupportedCurrency.CAD)
 							.build())
-					.withBanner(banner)
-          .withMinAmountValue(Amount.builder()
-              .withDecimalValue(DecimalValue.ONE_HUNDRED_PERCENT)
-              .withCurrency(SupportedCurrency.CAD)
+					.banner(banner)
+          .amountValue(Amount.builder()
+              .decimalValue(DecimalValue.ONE_HUNDRED_PERCENT)
+              .currencyCode(SupportedCurrency.CAD)
               .build())
-					.withId(new ObjectId("5733a8c6b958895728f2ba66").toString()).build();
+          .updatedAt(DateTime.now())
+					.id(new ObjectId("5733a8c6b958895728f2ba66")).build();
+
       amountCouponRepository.deleteAll();
 			amountCouponRepository.save(amountCoupon);
 
-			InventoryItem inventoryItem = new InventoryItem();
-			inventoryItem.setExternalRef(ExternalRef.builder().withId("25").withSource("facebook").build());
-			inventoryItem.setName("Kitchen Table");
-			inventoryItem.setQuantity(25);
+
+			InventoryItem chair = InventoryItem.builder()
+          .name("Kitchen Chair")
+          .updatedAt(DateTime.now())
+          .externalRef(ExternalRef.builder().id("25").source("facebook").build())
+          .quantity(89)
+          .build();
+
       inventoryItemRepository.deleteAll();
-			inventoryItemRepository.save(inventoryItem);
+			inventoryItemRepository.save(chair);
 		};
 	}
 }

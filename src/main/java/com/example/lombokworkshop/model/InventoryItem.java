@@ -1,8 +1,13 @@
 package com.example.lombokworkshop.model;
 
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -17,13 +22,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
     @CompoundIndex(name = "sku", def = "{'sku': 1}"),
     @CompoundIndex(name = "external_UID", def = "{'externalRef.id': 1}")
 })
-@JsonInclude(Include.NON_NULL)
+@Getter
+@Setter
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class InventoryItem extends BaseModel implements ModelWithExternalReference {
 
     private String apiKey;
     private String name;
     private String sku;
-
     private ExternalRef externalRef;
 
     @Version
@@ -33,8 +40,17 @@ public class InventoryItem extends BaseModel implements ModelWithExternalReferen
 
     private static final String TYPE = "inventory";
 
-    public InventoryItem() {
-        super();
+    @Builder
+    private InventoryItem(ObjectId id, DateTime createdAt, DateTime updatedAt,
+        String apiKey, String name, String sku,
+        ExternalRef externalRef, Long version, int quantity) {
+        super(id, createdAt, updatedAt);
+        this.apiKey = apiKey;
+        this.name = name;
+        this.sku = sku;
+        this.externalRef = externalRef;
+        this.version = version;
+        this.quantity = quantity;
     }
 
     @Override
@@ -51,60 +67,4 @@ public class InventoryItem extends BaseModel implements ModelWithExternalReferen
         return InventoryItem.TYPE;
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public boolean isAvailable(){
-        return this.getQuantity() > 0;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    @Override
-    public String toString() {
-        return "InventoryItem{" +
-            "apiKey='" + apiKey + '\'' +
-            ", name='" + name + '\'' +
-            ", sku='" + sku + '\'' +
-            ", externalRef=" + externalRef +
-            ", version=" + version +
-            ", quantity=" + quantity +
-            ", id=" + id +
-            '}';
-    }
 }

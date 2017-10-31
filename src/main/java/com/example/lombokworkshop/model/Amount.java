@@ -7,9 +7,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Optional;
 import java.util.function.Function;
+import lombok.Builder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+@Builder
 public class Amount {
 
   private DecimalValue decimalValue;
@@ -200,42 +202,6 @@ public class Amount {
     return decimalValue;
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public static Builder withSameCurrency(Amount source) {
-    return new Builder().withCurrency(source.getCurrency());
-  }
-
-  public static class Builder extends BaseBuilder<Amount, Amount.Builder> {
-
-    public Builder() {
-      super(Amount.class);
-    }
-
-    public Builder withDecimalValue(DecimalValue value) {
-      this.model.decimalValue = DecimalValue.builder().copy(value).build();
-      return thisBuilder;
-    }
-
-    public Builder withCurrency(SupportedCurrency currency) {
-      this.model.currencyCode = currency;
-      return thisBuilder;
-    }
-
-    public Builder withCurrencyCode(String currencyCode) {
-      this.model.currencyCode = this.model.getCurrency(currencyCode);
-      return thisBuilder;
-    }
-
-    @Override
-    public Builder copy(Amount source) {
-      withDecimalValue(source.getDecimalValue());
-      withCurrency(source.getCurrency());
-      return thisBuilder;
-    }
-  }
 
   @Override
   public String toString() {
