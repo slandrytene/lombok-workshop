@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: lombok-workshop
+  data:
+    mongodb:
+      database: lombok_worksop
