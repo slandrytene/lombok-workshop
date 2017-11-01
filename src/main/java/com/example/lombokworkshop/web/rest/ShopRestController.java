@@ -6,6 +6,7 @@ import com.example.lombokworkshop.service.ShopService;
 import com.google.gson.Gson;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ public class ShopRestController {
 
   private final ShopService shopService;
 
-  @GetMapping("/amount-coupons")
+  @GetMapping(value = "/amount-coupons", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity retrieveAllAmountCoupons(){
     List<AmountCoupon> coupons =  shopService.findAllAmountCoupons();
     Gson gson = new Gson();
