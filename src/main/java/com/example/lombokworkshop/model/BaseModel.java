@@ -7,7 +7,6 @@ import com.mongodb.DBRef;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,10 +14,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.convert.LazyLoadingProxy;
 
 @JsonIgnoreProperties(value = {"type"}, allowGetters = true)
-@AllArgsConstructor
-@ToString(of ={"id"} )
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public abstract class BaseModel extends Object implements Serializable {
 
   @Id
@@ -61,6 +59,11 @@ public abstract class BaseModel extends Object implements Serializable {
   @JsonProperty("id")
   public void setId(String id) {
     this.id = new ObjectId(id);
+  }
+
+  @Override
+  public String toString() {
+    return super.toString() + "#Id:" + this.getId();
   }
 
 
